@@ -1,4 +1,4 @@
-public class catlisting {
+public class CatListing {
 
     private long id;
     private long ownerId;
