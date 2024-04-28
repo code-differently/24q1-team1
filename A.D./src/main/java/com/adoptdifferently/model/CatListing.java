@@ -1,3 +1,4 @@
+package com.adoptdifferently.model;
 public class CatListing {
 
     private long id;
