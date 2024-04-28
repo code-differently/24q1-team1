@@ -1,4 +1,4 @@
-package com.adoptdifferently.utilTest;
+package com.adoptdifferently.util;
 
 public class EmailServiceTest {
     
