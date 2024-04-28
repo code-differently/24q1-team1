@@ -1,4 +1,4 @@
-package com.adoptdifferently.serviceTest;
+package com.adoptdifferently.service;
 
 public class CatListingServiceTest {
     
