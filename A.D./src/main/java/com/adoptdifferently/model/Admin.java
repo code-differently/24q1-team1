@@ -1,3 +1,6 @@
+package com.adoptdifferently.model;
+import java.util.UUID;
+
 public class Admin {
 
   private String username;
@@ -10,6 +13,10 @@ public class Admin {
     this.adminId = adminId;
   }
   // Getters and setters
+
+  public Admin() {
+    
+  }
 
   public UUID getAdminId() {
     return adminId;
