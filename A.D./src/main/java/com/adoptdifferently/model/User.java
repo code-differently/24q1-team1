@@ -23,7 +23,7 @@ public class User {
         this.country = country;
         this.city = city;
         this.postcode = postcode;
-        this.userId = userId;
+        this.userId = 1;
     }
     // <2>
     /**
@@ -42,8 +42,16 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+       if (isValidEmail(email)) {
+           this.email = email;
+       } else {
+        throw new IllegalArgumentException("Invalid email address");
+       }   
     }
+    private boolean isValidEmail(String email) {
+        return email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    }
+
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -112,8 +120,8 @@ public class User {
         catListings.add(catListing);
     }
 
-    public void removeCatListing(CatListing catListing) {
-        catListings.remove(catListing);
+    public void removeCatListing(int i) {
+        catListings.remove(i);
     }
 
     @Override
