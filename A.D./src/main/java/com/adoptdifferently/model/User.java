@@ -23,7 +23,7 @@ public class User {
         this.country = country;
         this.city = city;
         this.postcode = postcode;
-        this.userId = 1;
+        this.userId = userId;
     }
     // <2>
     /**
