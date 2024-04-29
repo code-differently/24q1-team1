@@ -24,6 +24,8 @@ public class UserTest {
     }
     @Test
     public void testGettersAndSetters(){
+        Long userId = 1L;
+
         assertEquals("John", user.getName());
         assertEquals("john@example.com", user.getEmail());
         assertEquals("123456789", user.getPhoneNumber());
@@ -31,7 +33,7 @@ public class UserTest {
         assertEquals("USA", user.getCountry());
         assertEquals("New York", user.getCity());
         assertEquals("10001", user.getPostcode());
-        assertEquals(1, user.getUserId());
+        assertEquals(userId, user.getUserId());
 
         user.setName("Alice");
         assertEquals("Alice", user.getName());
@@ -39,23 +41,19 @@ public class UserTest {
     @Test 
     public void testHashCodeAndEquals() {
         User user1  = new User("John", "john@example.com", "123456789", "password", "USA", "New York", "10001", 1);
-        User user2 = new User("John", "john@example.com", "123456789", "password", "USA", "New York", "10001", 1);
+        User user2 = new User("Blake", "blake@example.com", "987654321", "password", "USA", "Delaware", "19720", 1);
 
-        assertEquals(user, user1);
-        assertEquals(user.hashCode(), user1.hashCode());
-        assertEquals(user, user2);
-        assertEquals(user.hashCode(), user2.hashCode());
+        assertEquals(user1, user2);
+        assertEquals(user1.hashCode(), user2.hashCode());
     }
     @Test 
     public void testToString() {
-        User user = new User("John", "john@example.com", "123456789", "password", "USA", "New York", "10001", 1);
         String expectedString = "User [name=John, email=john@example.com, phoneNumber=123456789, password=password, country=USA, city=New York, postcode=10001, userId=1, catListings=[]]";
 
         assertEquals(expectedString, user.toString());
     }
     @Test 
     public void testisAdmin() {
-        User user = new User("John", "john@example.com", "123456789", "password", "USA", "New York", "10001", 1);
         assertEquals(false, user.isAdmin());
     }
     @Test 
