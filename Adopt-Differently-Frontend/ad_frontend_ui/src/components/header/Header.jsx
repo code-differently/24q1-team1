@@ -9,17 +9,19 @@ import {NavLink, BrowserRouter} from 'react-router-dom';
 export const Header = () => {
     return <div>
         <header className="header">
-            <img src={logo} alt="Adopt Differently Logo" className="logo"/>
             <BrowserRouter>
+                <div className="logoWrapper">
+                    <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""} to="/">
+                        <img src={logo} alt="Adopt Differently Logo" className="logo"/>
+                    </NavLink>
+                </div>
                 <nav id= "nav-tabs">
                 <ul className="header-top-menu">
                     <li>
-                        <Nav defaultActiveKey={'/'} >
-                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""} to="/">Home</NavLink>
-                        </Nav>
+                        <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""} to="/about">About</NavLink>
                     </li>
                     <li>
-                        <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""} to="/about">About</NavLink>
+                        <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""} to="/adopt">Adopt</NavLink>
                     </li>
                     <li>
                         <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""} to="/help">Help</NavLink>
@@ -29,12 +31,12 @@ export const Header = () => {
                 <div className="header-top-right">
                     <div className="signin">
                         <li>
-                            <Link to="/signin">signin</Link>
+                            <a to="/signin">Sign In</a>
                         </li>
                     </div>
                     <div className="signup">
                         <li>
-                            <Link to="/signup">signup</Link>
+                            <a to="/signup">Sign Up</a>
                         </li>
                     </div>
                 </div>
