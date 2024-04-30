@@ -1,9 +1,10 @@
-import React from "react";
+import React from 'react';
 import "./Header.css";
 import logo from '../../assets/FullAdoptDifferentlyLogo.png';
 import {Nav} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {NavLink, BrowserRouter} from 'react-router-dom';
+
 
 
 export const Header = () => {
@@ -28,6 +29,10 @@ export const Header = () => {
                     </li>
                 </ul>
                 </nav>
+                <div className="header-left">
+                    <input type="text" placeholder="Start Your Search Here!" className="search" id='search' />
+                    <button className="search-btn">Search</button>
+                </div>
                 <div className="header-top-right">
                     <div className="signin">
                         <li>

@@ -138,3 +138,39 @@ header {
     justify-content: center;
 }
 
+.search {
+    border-radius: 10px 0px 0px 10px;
+    padding: 10px;
+    background-color: white;
+    color: #60d0aeff;
+    border: transparent 1px solid;
+    width: 15vw;
+    :hover {
+        border-radius: 10px;
+        transition: 0.2s linear;
+        background-color: #60d0aeff;
+        color: white;
+        border: white 1px solid;
+    }
+}
+
+.search::placeholder {
+    color: #60d0aeff;
+}
+
+.search-btn {
+    border-radius: 0px 10px 10px 0px;
+    padding: 10px;
+    background-color: transparent;
+    color: white;
+    border: white 1px solid; 
+    width: 5vw;   
+}
+
+button:hover {
+    border-radius: 0px 10px 10px 0px;
+    transition: 0.2s linear;
+    background-color: white;
+    color: #60d0aeff;
+    border: transparent 1px solid;
+}
