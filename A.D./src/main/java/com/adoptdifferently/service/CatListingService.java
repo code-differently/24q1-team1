@@ -1,16 +1,25 @@
 package com.adoptdifferently.service;
 
 import com.adoptdifferently.model.CatListing;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class CatListingService {
+public interface CatListingService{
+    List<CatListing> getAllCatListings();
+    CatListing getCatListingById(long id);
 
+boolean deleteCatListingById(long id);
+
+boolean updateCatListing(CatListing updatedCatListing);
+
+boolean removeCatListingById(long id);
+
+boolean addCatListing(CatListing newCatListing);
+
+boolean retrieveCatListingById(long id);
 }
