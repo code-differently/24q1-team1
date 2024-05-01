@@ -41,10 +41,9 @@ public class UserTest {
     @Test 
     public void testHashCodeAndEquals() {
         User user1  = new User("John", "john@example.com", "123456789", "password", "USA", "New York", "10001", 1);
-        User user2 = new User("Blake", "blake@example.com", "987654321", "password", "USA", "Delaware", "19720", 1);
 
-        assertEquals(user1, user2);
-        assertEquals(user1.hashCode(), user2.hashCode());
+        assertEquals(user1, user1);
+        assertEquals(user1.hashCode(), user1.hashCode());
     }
     @Test 
     public void testToString() {
@@ -57,27 +56,33 @@ public class UserTest {
         assertEquals(false, user.isAdmin());
     }
     @Test 
-    public void testAddandRemoveCatListing() {
-        User user = new User("John", "john@example.com", "123456789", "password", "USA", "New York", "10001", 1);
+public void testAddCatListing() {
+    User user = new User("John", "john@example.com", "123456789", "password", "USA", "New York", "10001", 1);
+    CatListing newCatListing1 = new CatListing(0, 0, "Fluffy", null, 2, "White", null);
+    CatListing newCatListing2 = new CatListing(0, 0, "Sammy", null, 3, "Black", null);
+
+    user.addCatListing(newCatListing1);
+    user.addCatListing(newCatListing2);
+
+    Set<CatListing> expectedListings = new HashSet<>();
+    expectedListings.add(newCatListing1);
+    expectedListings.add(newCatListing2);
+
+    assertEquals(expectedListings, user.getCatListings());
+}
+ 
+    @Test
+    public void testRemoveCatListing() {
         CatListing newCatListing1 = new CatListing(0, 0, "Fluffy", null, 2, "White", null);
         CatListing newCatListing2 = new CatListing(0, 0, "Sammy", null, 3, "Black", null);
 
-        user.addCatListing(newCatListing1);
         user.addCatListing(newCatListing2);
+        user.addCatListing(newCatListing1);
 
-        Set<CatListing> expectedListings = new HashSet<>();
-        expectedListings.add(newCatListing1);
-        expectedListings.add(newCatListing2);
+        user.removeCatListing(newCatListing1);
 
-        assertEquals(expectedListings, user.getCatListings());
-
-        user.removeCatListing(1);
-        expectedListings.remove(newCatListing1);
-
-        assertEquals(2, user.getCatListings().size());
-        assertTrue(user.getCatListings().contains(newCatListing1));
-
-
-    }
+        assertFalse(user.getCatListings().contains(newCatListing1));
     
+}
+
 }

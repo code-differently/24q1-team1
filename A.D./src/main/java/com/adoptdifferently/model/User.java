@@ -25,7 +25,6 @@ public class User {
         this.postcode = postcode;
         this.userId = userId;
     }
-    // <2>
     /**
      * Getters and setters
      */
@@ -120,8 +119,8 @@ public class User {
         catListings.add(catListing);
     }
 
-    public void removeCatListing(int i) {
-        catListings.remove(i);
+    public void removeCatListing(CatListing newCatListing1) {
+        catListings.remove(newCatListing1);
     }
 
     @Override
