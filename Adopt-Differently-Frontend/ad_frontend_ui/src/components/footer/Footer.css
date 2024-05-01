@@ -7,7 +7,8 @@
     height: 120px;
     font-weight: bold;
     font-family: 'Source Sans Pro', sans-serif;
-    position: sticky;
     bottom: 0;
     width: 100vw;
+    font-size: 90%;
+    z-index: -99999;
 }
