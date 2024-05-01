@@ -4,7 +4,7 @@ import "./Footer.css";
 export const Footer = () => {
     return (
         <div className="footer">
-            <p>Copyright © 2022 Adopt Differently. All rights reserved.</p>
+            <p>Copyright © 2024 Adopt Differently. All rights NOT reserved.</p>
         </div>
     )
 }

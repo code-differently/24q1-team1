@@ -13,7 +13,6 @@ function App() {
       <BrowserRouter>
           <div>
             <Header />
-            <p>meow meow</p>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/adopt" element={<Listings />} />

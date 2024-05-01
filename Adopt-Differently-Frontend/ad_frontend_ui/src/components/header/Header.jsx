@@ -1,14 +1,17 @@
 import React from 'react';
 import "./Header.css";
 import logo from '../../assets/FullAdoptDifferentlyLogo.png';
-import {Nav} from 'react-bootstrap';
-import {Link, Route, Routes} from 'react-router-dom';
-import {NavLink, BrowserRouter} from 'react-router-dom';
-import { Listings } from '../listing/Listings';
-
+import {NavLink} from 'react-router-dom';
+import sound from '../../assets/audio.mp3';
 
 
 export const Header = () => {
+    let audio = new Audio(sound);
+
+    const start = () => {
+        audio.play()
+    }
+
     return <div>
         <header className="header">
             <div className="logoWrapper">
@@ -31,7 +34,17 @@ export const Header = () => {
             </nav>
             <div className="header-left">
                 <input type="text" placeholder="Start Your Search Here!" className="search" id='search' />
-                <button className="search-btn">Search</button>
+                <button className="search-btn" onClick={() =>{ 
+                    if (document.getElementById('search').value === "") {
+                        alert("Please enter something to search!")
+                    }
+                    else if (document.getElementById('search').value === "2 of Us") {
+                        start()
+                    }
+                    else {
+                        
+                    }
+                }}>Search</button>
             </div>
             <div className="header-top-right">
                 <div className="signin">
