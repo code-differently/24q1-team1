@@ -1,10 +1,19 @@
 package com.adoptdifferently.service;
 
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import org.springframework.stereotype.Service;
 import com.adoptdifferently.model.Admin;
+import com.adoptdifferently.util.EmailService;
 
 @Service
 public class AdminServiceImpl implements AdminService {
+
+    // Hardcoded admin credentials for testing purposes
+    @SuppressWarnings("unused")
+    private static final String adminUsername = "admin";
+    @SuppressWarnings("unused")
+    private static final String adminPassword = "admin123";
 
     @Override
     public boolean loginadmin(Admin admin) {
@@ -19,6 +28,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public boolean registeradmin(Admin admin) {
         if ("adminUsername".equals(admin.getUsername()) && "adminPassword".equals(admin.getPassword())) {
+            sendConfirmationEmail( admin.getEmail());
             return true; // Registration successful
         } else {
             return false; // Registration failed
@@ -26,44 +36,82 @@ public class AdminServiceImpl implements AdminService {
         // Implementation for registeradmin method
     }
 
+    
+
+    @SuppressWarnings("deprecation")
+    private void sendConfirmationEmail(Object email) {
+       // Construct the confirmation email message
+    String subject = "Confirmation Email";
+    String body = "Thank you for your action. Please click on the link below to confirm your email address.";
+    String confirmationLink = "https://example.com/confirm-email?email=" + email;
+    body += "\n\n" + confirmationLink;
+
+    // Send the email
+    EmailService.sendEmail(email, subject, body);
+   
+   // Create a LogRecord object with the log message
+    LogRecord record = new LogRecord(Level.INFO, "Confirmation email sent to: " + email);
+   
+   // Set additional properties of the LogRecord object if needed
+    record.setMillis(System.currentTimeMillis());
+    record.setLoggerName("MyLogger");
+    record.setThreadID((int) Thread.currentThread().getId());
+   
+   // Log the record using the appropriate logging framework or library
+   // For example, if you are using java.util.logging:
+    java.util.logging.Logger logger = java.util.logging.Logger.getLogger("MyLogger");
+    logger.log(record);
+    }
+
     @Override
     public boolean deleteadmin(Admin admin) {
-        
-        //Delete admin from database
-        // Return true if admin is deleted successfully, false otherwise
-        return false;
+        if("adminUsername".equals(admin.getUsername()) && "adminPassword".equals(admin.getPassword())) {
+            return true; // Delete successful
+        } else {
+            return false;
+        }
         // Implementation for deleteadmin method
     }
 
     @Override
     public boolean updateadmin(Admin admin) {
-        // Update admin details in database
-        // Return true if admin is updated successfully, false otherwise
-        return false;
+        if ("adminUsername".equals(admin.getUsername()) && "adminPassword".equals(admin.getPassword())) {
+            admin.setUsername("UpdatedAdminUsername");
+            admin.setPassword("UpdatedAdminPassword");
+            return true; // Update successful
+        } else {
+           return false; 
+        }
+        
         // Implementation for updateadmin method
     }
 
     @Override
     public Admin getadmin(Admin admin) {
-        // Get admin details from database
-        // Return the retrieved admin object or null if not found
-        return admin;
+        if("adminUsername".equals(admin.getUsername()) && "adminPassword".equals(admin.getPassword())) {
+            return admin;
+        }
+        else {
+            return null;
+        }
         // Implementation for getadmin method
     }
 
     @Override
     public boolean isAdmin(Admin admin) {
-        // Check if the provided admin object represents an admin user
-        // Return true if it is an admin, false otherwise
-        return false;
+        if("adminUsername".equals(admin.getUsername()) && "adminPassword".equals(admin.getPassword())) {
+            return true;
+        }
+        else {
+            return false;
+        }
         // Implementation for isAdmin method
     }
 
     @Override
     public boolean isUser(Admin admin) {
-        //Check if the provided admin object represents a regular user
-        //Check if the provided admin object represents a regular user
-        return false;
-        // Implementation for isUser method
-    }
+     return !"adminUsername".equals(admin.getUsername()) || !"adminPassword".equals(admin.getPassword());
+    // Implementation for isUser method
+}
+
 }

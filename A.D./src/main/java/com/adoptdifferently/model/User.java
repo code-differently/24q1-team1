@@ -146,6 +146,9 @@ public class User {
         User other = (User) obj;
         return userId == other.userId;
     }
+    public boolean isValid() {
+        return true;
+    }
 
 }
 

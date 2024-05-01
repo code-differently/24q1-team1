@@ -1,64 +1,155 @@
 package com.adoptdifferently.service;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.Set;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.adoptdifferently.model.CatListing;
 import com.adoptdifferently.model.User;
+import com.adoptdifferently.repository.UserRepository;
 
 public class  UserServiceImpl implements UserService {
 
     @Override
     public boolean registerUser(User user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'registerUser'");
+        if(user != null && user.isValid()) {   
+        }
+            return true;
+    }
+
+    @SuppressWarnings("unused")
+    private boolean isUserRegistered(User user) {
+        if(isUserRegistered(user)) {
+            return false;
+        } else {
+            return true;
+        }
+        
     }
 
     @Override
     public boolean authenticateUser(String email, String password) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'authenticateUser'");
+       User user = UserRepository.findByEmail(email);
+
+       if(user == null) {
+           return false;
+       } 
+       // Verify if the provided password matches the stored password hash
+       if(!user.getPassword().equals(password)) {
+           return false;
+       }
+
+       return true;
+     
     }
+   
+    
+     
+    
 
     @Override
     public boolean updateUser(User user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateUser'");
+        User existingUser = UserRepository.findById(user.getUserId());
+    
+    // If no user is found with the provided user ID, return false
+    if (existingUser == null) {
+        return false; // Unable to update user: user not found
     }
-
+    
+    // Update the existing user information with the values from the provided user object
+    existingUser.setName(user.getName());
+    existingUser.setEmail(user.getEmail());
+    existingUser.setPhoneNumber(user.getPhoneNumber());
+    existingUser.setPassword(user.getPassword());
+    existingUser.setCountry(user.getCountry());
+    existingUser.setCity(user.getCity());
+    existingUser.setPostcode(user.getPostcode());
+    
+    // Save the updated user information back to the database
+    UserRepository.save(existingUser);
+    
+    return true; // User update successful
+    }
+       
     @Override
     public boolean deleteUser(long userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteUser'");
+       User userToDelete = UserRepository.findById(userId);
+       if (userToDelete == null) {
+           return false;
+       }
+       UserRepository.delete(userToDelete);
+       return true;
     }
 
     @Override
     public User getUserById(long userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUserById'");
+        User user = UserRepository.findById(userId);
+        if(user == null) {
+            throw new UsernameNotFoundException("User not found with ID: " + userId);
+        }
+
+        return user;
     }
 
     @Override
     public boolean addCatListingToUser(long userId, CatListing catListing) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addCatListingToUser'");
+        User user = UserRepository.findById(userId);
+
+        // Check if the user exists
+        if (user == null) {
+            try {
+                throw new UserPrincipalNotFoundException("User not found with ID: " + userId);
+            } catch (UserPrincipalNotFoundException e) {
+                
+                e.printStackTrace();
+            }
+        }
+    
+        // Add the cat listing to the user's profile
+        user.addCatListing(catListing);
+    
+        // Save the updated user details to the database or external service
+        UserRepository.save(user);
+    
+        return true; 
     }
 
     @Override
     public void removeCatListingFromUser(long userId, CatListing catListing) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeCatListingFromUser'");
+        User user = UserRepository.findById(userId);
+
+        // Check if the user exists
+        if (user == null) {
+            try {
+                throw new UserPrincipalNotFoundException("User not found with ID: " + userId);
+            } catch (UserPrincipalNotFoundException e) {
+                
+                e.printStackTrace();
+            }
+        }
+    
+        // Add the cat listing to the user's profile
+        user.removeCatListing(catListing);
+    
+        // Save the updated user details to the database or external service
+        UserRepository.save(user);
+    
+        return; 
     }
 
     @Override
     public Set<CatListing> getAllCatListingsForUser(long userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllCatListingsForUser'");
-    }
-
-    @Override
-    public boolean createUser(User user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createUser'");
+        User user = UserRepository.findById(userId);
+        if(user == null) {
+            try {
+                throw new UserPrincipalNotFoundException("User not found with ID: " + userId);
+            } catch (UserPrincipalNotFoundException e) {
+                
+                e.printStackTrace();
+            }
+        }
+        return user.getCatListings();
     }
 
     @Override
@@ -72,5 +163,13 @@ public class  UserServiceImpl implements UserService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteCatListing'");
     }
-    
+
+    @Override
+    public boolean createUser(User user) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createUser'");
+    }
+
 }
+    
+
