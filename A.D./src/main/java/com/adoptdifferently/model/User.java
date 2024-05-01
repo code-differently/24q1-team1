@@ -25,7 +25,6 @@ public class User {
         this.postcode = postcode;
         this.userId = userId;
     }
-    // <2>
     /**
      * Getters and setters
      */
@@ -42,8 +41,16 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+       if (isValidEmail(email)) {
+           this.email = email;
+       } else {
+        throw new IllegalArgumentException("Invalid email address");
+       }   
     }
+    private boolean isValidEmail(String email) {
+        return email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    }
+
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -112,8 +119,8 @@ public class User {
         catListings.add(catListing);
     }
 
-    public void removeCatListing(CatListing catListing) {
-        catListings.remove(catListing);
+    public void removeCatListing(CatListing newCatListing1) {
+        catListings.remove(newCatListing1);
     }
 
     @Override
@@ -138,6 +145,9 @@ public class User {
             return false;
         User other = (User) obj;
         return userId == other.userId;
+    }
+    public boolean isValid() {
+        return true;
     }
 
 }

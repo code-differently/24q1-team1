@@ -64,4 +64,8 @@ public class Admin {
         Admin admin = (Admin) o;
         return Objects.equals(adminId, admin.adminId);
     }
+
+    public Object getEmail() {
+        return null;
+    }
 }
