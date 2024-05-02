@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #d4e6e1ff;
+
+  font-family: 'Source Sans Pro', sans-serif;
+
+}
