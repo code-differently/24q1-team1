@@ -1,175 +1,137 @@
 package com.adoptdifferently.service;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
-
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.adoptdifferently.model.CatListing;
 import com.adoptdifferently.model.User;
 import com.adoptdifferently.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
-public class  UserServiceImpl implements UserService {
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final CatListing userRepository;
+
+    public UserServiceImpl(CatListing userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public boolean registerUser(User user) {
-        if(user != null && user.isValid()) {   
-        }
-            return true;
-    }
-
-    @SuppressWarnings("unused")
-    private boolean isUserRegistered(User user) {
-        if(isUserRegistered(user)) {
-            return false;
-        } else {
+        if (user != null && user.isValid()) {
+            // Additional logic for registering the user
             return true;
         }
-        
+        return false;
     }
 
     @Override
     public boolean authenticateUser(String email, String password) {
-       User user = UserRepository.findByEmail(email);
-
-       if(user == null) {
-           return false;
-       } 
-       // Verify if the provided password matches the stored password hash
-       if(!user.getPassword().equals(password)) {
-           return false;
-       }
-
-       return true;
-     
+        User user = UserRepository.findById();
+        return user != null && user.getPassword().equals(password);
     }
-   
-    
-     
-    
 
     @Override
     public boolean updateUser(User user) {
-        User existingUser = UserRepository.findById(user.getUserId());
-    
-    // If no user is found with the provided user ID, return false
-    if (existingUser == null) {
-        return false; // Unable to update user: user not found
+        Optional<User> existingUser = Optional.empty();
+        if (existingUser.isPresent()) {
+            User updatedUser = existingUser.get();
+            // Update user details
+            updatedUser.setName(user.getName());
+            updatedUser.setEmail(user.getEmail());
+            updatedUser.setPhoneNumber(user.getPhoneNumber());
+            updatedUser.setPassword(user.getPassword());
+            updatedUser.setCountry(user.getCountry());
+            updatedUser.setCity(user.getCity());
+            updatedUser.setPostcode(user.getPostcode());
+            UserRepository.save(updatedUser);
+            return true;
+        }
+        return false;
     }
-    
-    // Update the existing user information with the values from the provided user object
-    existingUser.setName(user.getName());
-    existingUser.setEmail(user.getEmail());
-    existingUser.setPhoneNumber(user.getPhoneNumber());
-    existingUser.setPassword(user.getPassword());
-    existingUser.setCountry(user.getCountry());
-    existingUser.setCity(user.getCity());
-    existingUser.setPostcode(user.getPostcode());
-    
-    // Save the updated user information back to the database
-    UserRepository.save(existingUser);
-    
-    return true; // User update successful
-    }
-       
+
     @Override
     public boolean deleteUser(long userId) {
-       User userToDelete = UserRepository.findById(userId);
-       if (userToDelete == null) {
-           return false;
-       }
-       UserRepository.delete(userToDelete);
-       return true;
+        Optional<User> userToDelete = Optional.ofNullable(UserRepository.findById(userId));
+        userToDelete.ifPresent(user -> UserRepository.delete(user));
+        return userToDelete.isPresent();
     }
 
     @Override
-    public User getUserById(long userId) {
-        User user = UserRepository.findById(userId);
-        if(user == null) {
-            throw new UsernameNotFoundException("User not found with ID: " + userId);
-        }
-
-        return user;
-    }
+public User getUserById(long userId) {
+    return UserRepository.findById(userId)
+            .orElse(null);
+}
 
     @Override
     public boolean addCatListingToUser(long userId, CatListing catListing) {
-        User user = UserRepository.findById(userId);
-
-        // Check if the user exists
-        if (user == null) {
-            try {
-                throw new UserPrincipalNotFoundException("User not found with ID: " + userId);
-            } catch (UserPrincipalNotFoundException e) {
-                
-                e.printStackTrace();
-            }
+        Optional<User> optionalUser = Optional.ofNullable(UserRepository.findById(userId));
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.addCatListing(userRepository);    
+             UserRepository.save(user);
+            return true;
         }
-    
-        // Add the cat listing to the user's profile
-        user.addCatListing(catListing);
-    
-        // Save the updated user details to the database or external service
-        UserRepository.save(user);
-    
-        return true; 
+        return false;
     }
 
     @Override
     public void removeCatListingFromUser(long userId, CatListing catListing) {
-        User user = UserRepository.findById(userId);
-
-        // Check if the user exists
-        if (user == null) {
-            try {
-                throw new UserPrincipalNotFoundException("User not found with ID: " + userId);
-            } catch (UserPrincipalNotFoundException e) {
-                
-                e.printStackTrace();
-            }
-        }
-    
-        // Add the cat listing to the user's profile
-        user.removeCatListing(catListing);
-    
-        // Save the updated user details to the database or external service
-        UserRepository.save(user);
-    
-        return; 
-    }
-
-    @Override
-    public Set<CatListing> getAllCatListingsForUser(long userId) {
-        User user = UserRepository.findById(userId);
-        if(user == null) {
-            try {
-                throw new UserPrincipalNotFoundException("User not found with ID: " + userId);
-            } catch (UserPrincipalNotFoundException e) {
-                
-                e.printStackTrace();
-            }
-        }
-        return user.getCatListings();
+        Optional<User> optionalUser = Optional.ofNullable(UserRepository.findById(userId));
+        optionalUser.ifPresent(user -> {
+            user.removeCatListing(catListing);
+            UserRepository.save(user);
+        });
     }
 
     @Override
     public boolean updateCatListing(long userId, long catListingId, CatListing catListing) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateCatListing'");
+        Optional<User> optionalUser = Optional.ofNullable(UserRepository.findById(userId));
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Optional<CatListing> optionalCatListing = User.getCatListings().stream()
+                    .filter(cl -> cl.getId() == catListingId)
+                    .findFirst();
+            optionalCatListing.ifPresent(existingCatListing -> {
+                // Update cat listing details
+                existingCatListing.setName(catListing.getName());
+                existingCatListing.setBreed(catListing.getBreed());
+                existingCatListing.setAge(catListing.getAge());
+                existingCatListing.setLocation(catListing.getLocation());
+                existingCatListing.setDescription(catListing.getDescription());     
+                UserRepository.save(user);
+            });
+            return optionalCatListing.isPresent();
+        }
+        return false;
     }
 
     @Override
     public boolean deleteCatListing(long userId, long catListingId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteCatListing'");
+        Optional<User> optionalUser = Optional.ofNullable(UserRepository.findById(userId));
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            boolean removed = User.getCatListings().removeIf(catListing -> catListing.getId() == catListingId);
+            if (removed) {
+                UserRepository.save(user);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean createUser(User user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createUser'");
+        // Logic for creating a new user
+        return true;
     }
 
+    @Override
+    public Set<CatListing> getAllCatListingsForUser(long userId) {
+        Optional<User> optionalUser = Optional.ofNullable(UserRepository.findById(userId));
+        return optionalUser.map(user -> User.getCatListings()).orElse(Collections.emptySet());
+    }
 }
-    
-

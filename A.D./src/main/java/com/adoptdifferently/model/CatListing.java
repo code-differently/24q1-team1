@@ -51,8 +51,8 @@ public class CatListing {
         this.id = id;
     }
 
-    public void setOwnerId(long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerId(long userId) {
+        this.ownerId = userId;
     }
 
     public void setName(String name) {

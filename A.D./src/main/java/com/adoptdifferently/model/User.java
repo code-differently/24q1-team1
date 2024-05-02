@@ -12,8 +12,8 @@ public class User {
     private String country;
     private String city;
     private String postcode;
-    private long userId;
-    private Set<CatListing> catListings = new HashSet<>(); // <1>
+    private static long userId;
+    private static Set<CatListing> catListings = new HashSet<>(); // <1>
 
     User(String name, String email, String phoneNumber, String password, String country, String city, String postcode, long userId) {
         this.name = name;
@@ -23,7 +23,7 @@ public class User {
         this.country = country;
         this.city = city;
         this.postcode = postcode;
-        this.userId = userId;
+        User.userId = userId;
     }
     /**
      * Getters and setters
@@ -101,22 +101,22 @@ public class User {
     }
 
     public void setUserId(long userId) {
-        this.userId = userId;
+        User.userId = userId;
     }
 
-    public Set<CatListing> getCatListings() {
-        catListings.forEach(catListing -> catListing.setOwnerId(userId));
+    public static Set<CatListing> getCatListings() {
+        catListings.forEach(catListing -> catListing.setId(userId));
         Set<CatListing> list = catListings;
         return list;
     }
 
     public void setCatListings(Set<CatListing> catListings) {
-        this.catListings = catListings;
+        User.catListings = catListings;
     }
 
     // add and remove from catListings
-    public void addCatListing(CatListing catListing) {
-        catListings.add(catListing);
+    public void addCatListing(CatListing newCatListing1) {
+        catListings.add((CatListing) newCatListing1);
     }
 
     public void removeCatListing(CatListing newCatListing1) {
@@ -135,6 +135,7 @@ public class User {
         return Objects.hash(userId);
     }
 
+    @SuppressWarnings("static-access")
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -148,6 +149,9 @@ public class User {
     }
     public boolean isValid() {
         return true;
+    }
+    public User orElse(Object object) {
+        throw new UnsupportedOperationException("Unimplemented method 'orElse'");
     }
 
 }

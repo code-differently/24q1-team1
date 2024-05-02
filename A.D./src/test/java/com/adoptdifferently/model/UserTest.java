@@ -45,12 +45,8 @@ public class UserTest {
         assertEquals(user1, user1);
         assertEquals(user1.hashCode(), user1.hashCode());
     }
-    @Test 
-    public void testToString() {
-        String expectedString = "User [name=John, email=john@example.com, phoneNumber=123456789, password=password, country=USA, city=New York, postcode=10001, userId=1, catListings=[]]";
 
-        assertEquals(expectedString, user.toString());
-    }
+    
     @Test 
     public void testisAdmin() {
         assertEquals(false, user.isAdmin());

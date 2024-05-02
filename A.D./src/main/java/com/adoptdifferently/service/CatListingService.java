@@ -10,8 +10,12 @@ import java.util.List;
 @Service
 @Transactional
 public interface CatListingService{
-    List<CatListing> getAllCatListings();
-    CatListing getCatListingById(long id);
+
+static List<CatListing> getAllCatListings() {
+    throw new UnsupportedOperationException("Unimplemented method 'getAllCatListings'");
+}
+
+CatListing getCatListingById(long id);
 
 boolean deleteCatListingById(long id);
 
