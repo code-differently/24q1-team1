@@ -6,10 +6,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Listings } from './components/listing/Listings'
 import { Home } from './pages/home/Home'
 import { About } from './pages/about/About'
+import { ListingPage } from './pages/listingpage/ListingPage'
+
+const lists = <Listings />
 
 function App() {
   return (
     <div className="App">
+      
+      {console.log(lists.props)}
+
       <BrowserRouter>
           <div>
             <Header />
@@ -17,6 +23,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/adopt" element={<Listings />} />
               <Route path="/about" element={<About />} />
+              <Route path="/post/:id" element={<ListingPage />} />
             </Routes>
           </div>
           <Footer />
